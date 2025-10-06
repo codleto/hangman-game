@@ -13,12 +13,15 @@
  */
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Stars {
     public static void main(String[] args) {
         do {
+
             showStartMenu();
         } while (true);
     }
@@ -77,11 +80,18 @@ public class Stars {
         } while (true);
     }
 
-    public static void checkWin() { // проверка выиграли мы или нет
-        if (secretWord.length() == correctLettersCount) {
+    public static void checkWin() {// проверка выиграли мы или нет
+        int we = secretWord.length();
+        int open = 0;// 4
+        for(int i = 0; i < we; i++) {      //2
+            if(!"_ ".equals(board[7][i])) {
+                open++;
+            }
+            if(we == open){
             System.out.println("ТЫ ВЫИГРАЛ!!!");
             wins++;
             showStartMenu();
+            }
         }
     }
 
@@ -100,6 +110,7 @@ public class Stars {
     public static int mistakesCount = 0; // счетчик ошибок
     public static int wrongLettersCount = 1; //счетчик неверных букв
     public static int correctLettersCount = 0; // счетчик отгаданных букв
+
 
     // Поле
     static String[][] board = {{"__", "__", "_ "},
