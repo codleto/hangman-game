@@ -81,13 +81,13 @@ public class Stars {
     }
 
     public static void checkWin() {// проверка выиграли мы или нет
-        int we = secretWord.length();
-        int open = 0;// 4
-        for(int i = 0; i < we; i++) {      //2
+        int length = secretWord.length();
+        int openСells = 0;// 4
+        for(int i = 0; i < length; i++) {      //2
             if(!"_ ".equals(board[7][i])) {
-                open++;
+                openСells++;
             }
-            if(we == open){
+            if(length == openСells){
             System.out.println("ТЫ ВЫИГРАЛ!!!");
             wins++;
             showStartMenu();
