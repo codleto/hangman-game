@@ -2,7 +2,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Hangman {
+public class Stars {
     public static void main(String[] args) {
         do {
             showStartMenu();
