@@ -21,9 +21,9 @@ import java.util.Scanner;
 public class Stars {
     public static void main(String[] args) {
         do {
-
             showStartMenu();
-        } while (true);
+
+        } while (stop);
     }
 
     public static void start() {
@@ -33,20 +33,30 @@ public class Stars {
             chekUp(s);
             checkWin();
             checkLoss();
-        } while (true);
+        } while (stop);
     }
 
     public static void showStartMenu() {
         //Меню в начале игры
-        System.out.println("1 - Новая игра");
-        System.out.println("2 - Статистика");
-        Scanner scanner = new Scanner(System.in);
-        int menuChoice = scanner.nextInt();
+        boolean stoped = true;
+        char numberer;
         do {
-            if (menuChoice == 1) { // если выбрали 1 - начинаем новую игру
+            System.out.println("1 - Новая игра");
+            System.out.println("2 - Статистика");
+            System.out.println("3 - Выход");
+            Scanner scanner = new Scanner(System.in);
+            String menuChoice = scanner.nextLine().trim();
+
+
+            if(!menuChoice.matches("[123]")){
+                System.out.println("Нужно ввести только 1, либо 2, либо 3");
+                continue;
+            }
+            int num = Integer.parseInt(menuChoice);
+            if (num == 1) { // если выбрали 1 - начинаем новую игру
                 startNewGame();
                 start();
-            } else if (menuChoice == 2) { // если 2 - смотрим статистику
+            } else if (num == 2) { // если 2 - смотрим статистику
                 if (wins == 0 && losses == 0) { //проверяем счетчики
                     System.out.println("Ты еще не сыграл, статистики нет ;)");
                     System.out.println("0 - Выход");
@@ -74,10 +84,11 @@ public class Stars {
                     } while (exit != 0);
                     showStartMenu();
                 }
-            } else {
-                System.out.println("Ошибка ввода! Введите нужную цифру (1 или 2)");
+            } else if (num == 3) {
+                System.out.println("Выход");
+                stop = false;
             }
-        } while (true);
+        } while (stop);
     }
 
     public static void checkWin() {// проверка выиграли мы или нет
@@ -88,6 +99,7 @@ public class Stars {
                 openСells++;
             }
             if(length == openСells){
+                showBoard();
             System.out.println("ТЫ ВЫИГРАЛ!!!");
             wins++;
             showStartMenu();
@@ -109,7 +121,8 @@ public class Stars {
     public static int losses = 0; // счетчик проигрышей
     public static int mistakesCount = 0; // счетчик ошибок
     public static int wrongLettersCount = 1; //счетчик неверных букв
-    public static int correctLettersCount = 0; // счетчик отгаданных букв
+    public static int correctLettersCount = 0;// счетчик отгаданных букв
+    public static boolean stop = true;// если false то завершаем программу
 
 
     // Поле
@@ -160,6 +173,7 @@ public class Stars {
         if (e == 0) {
             board[8][wrongLettersCount] = x + " ";
             mistakesCount++;
+            board[8][0] = "Неверно введенные буквы :(" + mistakesCount + ")";
             incrementMistakes(mistakesCount);
             wrongLettersCount++;
         }
@@ -167,13 +181,17 @@ public class Stars {
 
     public static String scanner() {
         Scanner scanner = new Scanner(System.in);
+        char letter;
         do {
-            System.out.println("Введите ТОЛЬКО одну букву");
+            System.out.println("Введите ТОЛЬКО одну строчную букву на кириллице");
             String sc = scanner.nextLine();
+            letter = sc.charAt(0);
             if (sc.length() != 1) {
                 System.out.println("Вы ввели больше одной буквы");
-            } else {
+            } else if (letter >= 'а' && letter <= 'я') {
                 return sc;
+            } else {
+                System.out.println("Ошибка! Нужно ввести СТРОЧНУЮ букву на КИРИЛЛИЦЕ");
             }
         } while (true);
     } // ввод и проверка кол-во букв
