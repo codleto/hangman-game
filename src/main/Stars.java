@@ -19,7 +19,7 @@ package main;
 - сделать маскировку слов * для прикола
 
 
-- в мейне не нужен цикл, он бесмысленный , нам просто нужно запустить метод и все
++ в мейне не нужен цикл, он бесмысленный , нам просто нужно запустить метод и все
 
 - отдельно сделать метод где пользователь вводит
 
@@ -31,10 +31,7 @@ import java.util.Scanner;
 
 public class Stars {
     public static void main(String[] args) {
-        do {
             showStartMenu();
-
-        } while (stop);
     }
 
     public static void showMenu(){
@@ -44,13 +41,14 @@ public class Stars {
     }
 
     public static void start() {
-        do {
+
+        while(true) {
             showBoard();
             String s = scanner();
             chekUp(s);
             checkWin();
             checkLoss();
-        } while (stop);
+        }
     }
 
     public static void showStartMenu() {
