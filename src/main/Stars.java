@@ -12,7 +12,6 @@ package main;
 - сделать чтобы после выхода статистика ( создание файла куда идет запись) не сбрасывалась и добавить кнопку сброса статистики
 - во всех ответвлениях где есть сканнер нужно условно продублировать защиту от ошибок ввода
 - убрать коменты
--  в мейне цикл не нужен ( подумай почему)
 - лучше всегда использовать while вместо do в наших примерах в основном нужен бесконечный цикл выход из него брейк,
  если вошли в какой то иф то континье
 - каждый метод должен выполнять одну задачу а не несколько как в showStartMenu где и валидация ввода и прочее
@@ -39,6 +38,7 @@ public class Stars {
     public static boolean stop = true;// если false то завершаем программу
 
     // Поле
+    public static Scanner scanner = new Scanner(System.in);
     public static String[][] board = {{"__", "__", "_ "},
             {"| ", "  ", " |"},
             {"| ", "  ", "  "},
@@ -64,6 +64,85 @@ public class Stars {
             {"Неверно введенные буквы :", "", "", "", "", "", ""}};
 
     // так как все методы одинаковые то встраиваем их по логике
+    public static int scannerInt(){
+        while(true){
+            String s = scanner.nextLine().trim();
+            if(s.matches("\\d+")){
+                return Integer.parseInt(s);
+            }
+            System.out.println("Ошибка! Введите число без букв и символов!");
+        }
+    }
+
+    public  static String scannerLine(){
+        while (true) {
+            String s = scanner.nextLine().trim();
+            if(s.matches("[А-Яа-яЁё]")){
+                return s.toLowerCase();
+            }
+            System.out.println("Ошибка! Введите букву кириллицы без цифр и символов!");
+        }
+    }
+
+    public static void statistic(){
+
+    }
+
+
+//--------------------------------------------------------------------------
+    public static void showStartMenu() {
+        //Меню в начале игры
+        boolean stoped = true;
+        char numberer;
+        do {
+            showMenu();
+            String menuChoice = scanner.nextLine().trim();
+
+
+            if(!menuChoice.matches("[123]")){
+                System.out.println("Нужно ввести только 1, либо 2, либо 3");
+                continue;
+            }
+
+            int num = Integer.parseInt(menuChoice);
+            if (num == 1) { // если выбрали 1 - начинаем новую игру
+                startNewGame();
+                start();
+            } else if (num == 2) { // если 2 - смотрим статистику
+                if (wins == 0 && losses == 0) { //проверяем счетчики
+                    System.out.println("Ты еще не сыграл, статистики нет ;)");
+                    System.out.println("0 - Выход");
+                    int exit;
+                    do {
+                        exit = scannerInt();
+                        if (exit != 0) {
+                            System.out.println("Неверный ввод");
+                        }
+                        System.out.println("введите 0");
+                    } while (exit != 0);
+                    showStartMenu();
+                } else {
+                    System.out.println("Твоя статистика!");
+                    System.out.println("Выигрыши: " + wins);
+                    System.out.println("Проигрыши: " + losses);
+                    System.out.println("0 - Выход");
+
+                    int exit;
+                    do {
+                        exit = scannerInt();
+                        if (exit != 0) {
+                            System.out.println("Неверный ввод");
+                        }
+                    } while (exit != 0);
+                    showStartMenu();
+                }
+            } else if (num == 3) {
+                System.out.println("Выход");
+                stop = false;
+            }
+        } while (stop);
+    }
+
     public static void showMenu(){
         System.out.println("1 - Новая игра");
         System.out.println("2 - Статистика");
@@ -79,59 +158,6 @@ public class Stars {
             checkWin();
             checkLoss();
         }
-    }
-
-    public static void showStartMenu() {
-        //Меню в начале игры
-        boolean stoped = true;
-        char numberer;
-        do {
-            showMenu();
-            Scanner scanner = new Scanner(System.in);
-            String menuChoice = scanner.nextLine().trim();
-
-
-            if(!menuChoice.matches("[123]")){
-                System.out.println("Нужно ввести только 1, либо 2, либо 3");
-                continue;
-            }
-            int num = Integer.parseInt(menuChoice);
-            if (num == 1) { // если выбрали 1 - начинаем новую игру
-                startNewGame();
-                start();
-            } else if (num == 2) { // если 2 - смотрим статистику
-                if (wins == 0 && losses == 0) { //проверяем счетчики
-                    System.out.println("Ты еще не сыграл, статистики нет ;)");
-                    System.out.println("0 - Выход");
-                    Scanner scanner1 = new Scanner(System.in);
-                    int exit;
-                    do {
-                        exit = scanner1.nextInt();
-                        if (exit != 0) {
-                            System.out.println("Неверный ввод");
-                        }
-                    } while (exit != 0);
-                    showStartMenu();
-                } else {
-                    System.out.println("Твоя статистика!");
-                    System.out.println("Выигрыши: " + wins);
-                    System.out.println("Проигрыши: " + losses);
-                    System.out.println("0 - Выход");
-                    Scanner scanner1 = new Scanner(System.in);
-                    int exit;
-                    do {
-                        exit = scanner1.nextInt();
-                        if (exit != 0) {
-                            System.out.println("Неверный ввод");
-                        }
-                    } while (exit != 0);
-                    showStartMenu();
-                }
-            } else if (num == 3) {
-                System.out.println("Выход");
-                stop = false;
-            }
-        } while (stop);
     }
 
     public static void checkWin() {// проверка выиграли мы или нет
