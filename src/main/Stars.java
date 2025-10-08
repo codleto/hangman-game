@@ -85,62 +85,48 @@ public class Stars {
     }
 
     public static void statistic(){
-
+        if (wins == 0 && losses == 0) { //проверяем счетчики
+            System.out.println("Ты еще не сыграл, статистики нет ;)");
+        } else {
+            System.out.println("Твоя статистика!");
+            System.out.println("Выигрыши: " + wins);
+            System.out.println("Проигрыши: " + losses);
+        }
+        System.out.println("писька");
     }
 
 
 //--------------------------------------------------------------------------
     public static void showStartMenu() {
         //Меню в начале игры
-        boolean stoped = true;
-        char numberer;
-        do {
+        while(true){
             showMenu();
-            String menuChoice = scanner.nextLine().trim();
-
-
-            if(!menuChoice.matches("[123]")){
-                System.out.println("Нужно ввести только 1, либо 2, либо 3");
-                continue;
-            }
-
-            int num = Integer.parseInt(menuChoice);
-            if (num == 1) { // если выбрали 1 - начинаем новую игру
+            int ch = scannerInt();
+            if (ch == 1) { // если выбрали 1 - начинаем новую игру
                 startNewGame();
                 start();
-            } else if (num == 2) { // если 2 - смотрим статистику
-                if (wins == 0 && losses == 0) { //проверяем счетчики
-                    System.out.println("Ты еще не сыграл, статистики нет ;)");
-                    System.out.println("0 - Выход");
-                    int exit;
-                    do {
-                        exit = scannerInt();
-                        if (exit != 0) {
-                            System.out.println("Неверный ввод");
-                        }
-                        System.out.println("введите 0");
-                    } while (exit != 0);
-                    showStartMenu();
-                } else {
-                    System.out.println("Твоя статистика!");
-                    System.out.println("Выигрыши: " + wins);
-                    System.out.println("Проигрыши: " + losses);
-                    System.out.println("0 - Выход");
-
-                    int exit;
-                    do {
-                        exit = scannerInt();
-                        if (exit != 0) {
-                            System.out.println("Неверный ввод");
-                        }
-                    } while (exit != 0);
-                    showStartMenu();
-                }
-            } else if (num == 3) {
-                System.out.println("Выход");
-                stop = false;
             }
-        } while (stop);
+            else if(ch == 2) {// если 2 - смотрим статистику//
+                statistic();
+               System.out.println("0 - Выход");
+               while(true) {
+                   int exit = scannerInt();
+                   if (exit == 0) {
+                       break;
+                   }
+                   System.out.println("Введите 0 для выхода");
+               }
+            }
+            else if(ch == 3) {
+                System.out.println("Выход");
+                break;
+            }
+            else {
+                System.out.println("Ошибка ввода");
+            }
+        }
+
+
     }
 
     public static void showMenu(){
@@ -153,7 +139,7 @@ public class Stars {
 
         while(true) {
             showBoard();
-            String s = scanner();
+            String s = scannerLine();
             chekUp(s);
             checkWin();
             checkLoss();
