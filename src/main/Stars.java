@@ -30,10 +30,40 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Stars {
-    public static void main(String[] args) {
-            showStartMenu();
-    }
+    //СЧЕТЧИКИ
+    public static int wins = 0; // счетчик выигрышей
+    public static int losses = 0; // счетчик проигрышей
+    public static int mistakesCount = 0; // счетчик ошибок
+    public static int wrongLettersCount = 1; //счетчик неверных букв
+    public static int correctLettersCount = 0;// счетчик отгаданных букв
+    public static boolean stop = true;// если false то завершаем программу
 
+    // Поле
+    public static String[][] board = {{"__", "__", "_ "},
+            {"| ", "  ", " |"},
+            {"| ", "  ", "  "},
+            {"| ", "  ", "   "},
+            {"| ", " ", "    "},
+            {"A ", "  ", "  "},
+            {" "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
+    //Список слов
+    public static String[] collectionWords = {"Кукуруза", "Болото", "Автомобиль", "Чебурек", "Жираф", "Бамбук"};
+
+    public static String secretWord = getRandomWord();
+
+    public static String[][] resetBoard = {{"__", "__", "_ "},  // шаблон для расчистки поля для новой игры
+            {"| ", "  ", " |"},
+            {"| ", "  ", "  "},
+            {"| ", "  ", "   "},
+            {"| ", " ", "    "},
+            {"A ", "  ", "  "},
+            {" "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
+
+    // так как все методы одинаковые то встраиваем их по логике
     public static void showMenu(){
         System.out.println("1 - Новая игра");
         System.out.println("2 - Статистика");
@@ -128,31 +158,6 @@ public class Stars {
             showStartMenu();
         }
     }
-
-    //СЧЕТЧИКИ
-    public static int wins = 0; // счетчик выигрышей
-    public static int losses = 0; // счетчик проигрышей
-    public static int mistakesCount = 0; // счетчик ошибок
-    public static int wrongLettersCount = 1; //счетчик неверных букв
-    public static int correctLettersCount = 0;// счетчик отгаданных букв
-    public static boolean stop = true;// если false то завершаем программу
-
-
-    // Поле
-    static String[][] board = {{"__", "__", "_ "},
-            {"| ", "  ", " |"},
-            {"| ", "  ", "  "},
-            {"| ", "  ", "   "},
-            {"| ", " ", "    "},
-            {"A ", "  ", "  "},
-            {" "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
-    //Список слов
-    static String[] collectionWords = {"Кукуруза", "Болото", "Автомобиль", "Чебурек", "Жираф", "Бамбук"};
-
-    // рандомное слово
-    static String secretWord = getRandomWord();
 
     public static String getRandomWord() {
         Random random = new Random();
@@ -253,13 +258,8 @@ public class Stars {
         secretWord = getRandomWord(); //генерируем новое слово
     }
 
-    static String[][] resetBoard = {{"__", "__", "_ "},  // шаблон для расчистки поля для новой игры
-            {"| ", "  ", " |"},
-            {"| ", "  ", "  "},
-            {"| ", "  ", "   "},
-            {"| ", " ", "    "},
-            {"A ", "  ", "  "},
-            {" "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
+    public static void main(String[] args) {
+        showStartMenu();
+    }
+
 }
