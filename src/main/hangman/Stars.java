@@ -1,4 +1,4 @@
-package main;
+package main.hangman;
 
 /*
 + Создать метод вызова консольного отображения меню
@@ -22,11 +22,15 @@ package main;
 
 - отдельно сделать метод где пользователь вводит
 
+- как я понимаю список хуевых букв можно сделать через Set чтобы буквы были уникальные чтобы не множить счетчик ошибок
  */
 
 //
-import java.util.Random;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Stars {
     //СЧЕТЧИКИ
@@ -38,6 +42,94 @@ public class Stars {
     public static boolean stop = true;// если false то завершаем программу
 
     // Поле
+    public static final String[] HANGMAN_STAGES = {
+            """
+            ========================
+            |//                    |
+            ||                     /\\
+            ||                     \\/
+            ||                   (×_×)
+            ||                    /||\\
+            ||                   / || \\\\
+            ||                    //\\\\
+            ||                   //  \\\\
+            ||======================||
+          __||______________________||
+             💀 GAME OVER 💀
+            """,
+            """
+                                             ========================
+                                             |//                   |
+                                             ||                   /
+                                             ||                  /
+                                             ||                 /
+                                             ||      \\        /
+                                             ||               /  ___(×_×)
+                                             ||              /  /   /||\\
+                                             ||             /  /  / || \\\\
+                                             ||            |  /    //\\\\
+                             ________        ||            \\/    //  \\\\
+                            |    |==|=|      ||===========================||
+                     ____________|==|=|______||___________________________||
+                                              💀 GAME OVER 💀
+            """,
+            """
+            ========================
+            |//                    |
+            ||                     /\\
+            ||                     \\/
+            ||                   (×_×)
+            ||                    /||\\
+            ||                   / || \\\\
+            ||                    //\\\\
+            ||                   //  \\\\
+            ||======================||
+          __||______________________||
+             💀 GAME OVER 💀
+            """,
+            """
+            ========================
+            |//                    |
+            ||                     /\\
+            ||                     \\/
+            ||                   (×_×)
+            ||                    /||\\
+            ||                   / || \\\\
+            ||                    //\\\\
+            ||                   //  \\\\
+            ||======================||
+          __||______________________||
+             💀 GAME OVER 💀
+            """,
+            """
+            ========================
+            |//                    |
+            ||                     /\\
+            ||                     \\/
+            ||                   (×_×)
+            ||                    /||\\
+            ||                   / || \\\\
+            ||                    //\\\\
+            ||                   //  \\\\
+            ||======================||
+          __||______________________||
+             💀 GAME OVER 💀
+            """,
+            """
+            ========================
+            |//                    |
+            ||                     /\\
+            ||                     \\/
+            ||                   (×_×)
+            ||                    /||\\
+            ||                   / || \\\\
+            ||                    //\\\\
+            ||                   //  \\\\
+            ||======================||
+          __||______________________||
+             💀 GAME OVER 💀
+            """
+    };
     public static Scanner scanner = new Scanner(System.in);
     public static String[][] board = {{"__", "__", "_ "},
             {"| ", "  ", " |"},
@@ -92,8 +184,35 @@ public class Stars {
             System.out.println("Выигрыши: " + wins);
             System.out.println("Проигрыши: " + losses);
         }
-        System.out.println("писька");
     }
+
+    public static List<String> load(){
+        List<String> result = new ArrayList<>();
+        try (InputStream is = Stars.class.getResourceAsStream("/words.txt");
+             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String w = line.trim();
+                if (!w.isEmpty()) result.add(w);
+            }
+        } catch (Exception e) {
+            System.out.println("Не удалось загрузить words.txt из ресурсов: " + e.getMessage());
+        }
+        // На всякий случай, если слов нет — подставим минимальный набор, чтобы игра не упала
+        if (result.isEmpty()) {
+            result = Arrays.asList("java", "код", "виселица");
+        }
+        return result;
+    }
+
+    public static String rraannddoomm(){
+        Random random = new Random();
+        List<String> raWord = load();
+        int randomWord = random.nextInt(raWord.size());
+        return raWord.get(randomWord);
+    }
+
 
 
 //--------------------------------------------------------------------------
@@ -125,8 +244,6 @@ public class Stars {
                 System.out.println("Ошибка ввода");
             }
         }
-
-
     }
 
     public static void showMenu(){
@@ -141,34 +258,41 @@ public class Stars {
             showBoard();
             String s = scannerLine();
             chekUp(s);
-            checkWin();
-            checkLoss();
+            if(checkWin()){
+                System.out.println("ТЫ ВЫИГРАЛ!!!");
+                wins++;
+                break;
+            }
+            if(checkLoss()){
+                losses++;
+                System.out.println("Вы проиграли!");
+                break;
+            }
         }
     }
 
-    public static void checkWin() {// проверка выиграли мы или нет
+    public static boolean checkWin() {// проверка выиграли мы или нет
         int length = secretWord.length();
         int openСells = 0;// 4
         for(int i = 0; i < length; i++) {      //2
             if(!"_ ".equals(board[7][i])) {
                 openСells++;
+
             }
             if(length == openСells){
                 showBoard();
-            System.out.println("ТЫ ВЫИГРАЛ!!!");
-            wins++;
-            showStartMenu();
+            return true;
             }
         }
+        return false;
     }
 
-    public static void checkLoss() {  //проверка проиграли мы или нет
+    public static boolean checkLoss() {  //проверка проиграли мы или нет
         if (mistakesCount == 6) {
             showBoard();
-            System.out.println("Вы проиграли!");
-            losses++;
-            showStartMenu();
+            return true;
         }
+        return false;
     }
 
     public static String getRandomWord() {
@@ -208,23 +332,6 @@ public class Stars {
             wrongLettersCount++;
         }
     }  // проверка есть ли такая буква в слове и вывод неверных букв
-
-    public static String scanner() {
-        Scanner scanner = new Scanner(System.in);
-        char letter;
-        do {
-            System.out.println("Введите ТОЛЬКО одну строчную букву на кириллице");
-            String sc = scanner.nextLine();
-            letter = sc.charAt(0);
-            if (sc.length() != 1) {
-                System.out.println("Вы ввели больше одной буквы");
-            } else if (letter >= 'а' && letter <= 'я') {
-                return sc;
-            } else {
-                System.out.println("Ошибка! Нужно ввести СТРОЧНУЮ букву на КИРИЛЛИЦЕ");
-            }
-        } while (true);
-    } // ввод и проверка кол-во букв
 
     public static void incrementMistakes(int a) {
         switch (a) {
@@ -271,6 +378,7 @@ public class Stars {
     }
 
     public static void main(String[] args) {
+        System.out.println(load());
         showStartMenu();
     }
 
