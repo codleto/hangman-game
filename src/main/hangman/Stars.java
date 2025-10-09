@@ -32,151 +32,113 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+
 public class Stars {
     //СЧЕТЧИКИ
     public static int wins = 0; // счетчик выигрышей
     public static int losses = 0; // счетчик проигрышей
     public static int mistakesCount = 0; // счетчик ошибок
-    public static int wrongLettersCount = 1; //счетчик неверных букв
+    public static int wrongLettersCount = 0; //счетчик неверных букв
     public static int correctLettersCount = 0;// счетчик отгаданных букв
     public static boolean stop = true;// если false то завершаем программу
 
     // Поле
-    public static final String[] HANGMAN_STAGES = {
+    public static String[] HANGMAN_STAGES = {
             """
-            ========================
-            |//                    |
-            ||                     /\\
-            ||                     \\/
-            ||                   (×_×)
-            ||                    /||\\
-            ||                   / || \\\\
-            ||                    //\\\\
-            ||                   //  \\\\
-            ||======================||
-          __||______________________||
-             💀 GAME OVER 💀
+           +---+
+           |   |
+               |
+               |
+               |
+               |
+          =========
+          
             """,
             """
-                                             ========================
-                                             |//                   |
-                                             ||                   /
-                                             ||                  /
-                                             ||                 /
-                                             ||      \\        /
-                                             ||               /  ___(×_×)
-                                             ||              /  /   /||\\
-                                             ||             /  /  / || \\\\
-                                             ||            |  /    //\\\\
-                             ________        ||            \\/    //  \\\\
-                            |    |==|=|      ||===========================||
-                     ____________|==|=|______||___________________________||
-                                              💀 GAME OVER 💀
+            +---+
+            |   |
+            O   |
+                |
+                |
+                |
+           =========
+           
             """,
             """
-            ========================
-            |//                    |
-            ||                     /\\
-            ||                     \\/
-            ||                   (×_×)
-            ||                    /||\\
-            ||                   / || \\\\
-            ||                    //\\\\
-            ||                   //  \\\\
-            ||======================||
-          __||______________________||
-             💀 GAME OVER 💀
+             +---+
+             |   |
+             O   |
+             |   |
+                 |
+                 |
+            =========
+            
             """,
             """
-            ========================
-            |//                    |
-            ||                     /\\
-            ||                     \\/
-            ||                   (×_×)
-            ||                    /||\\
-            ||                   / || \\\\
-            ||                    //\\\\
-            ||                   //  \\\\
-            ||======================||
-          __||______________________||
-             💀 GAME OVER 💀
+             +---+
+             |   |
+             O   |
+            /|   |
+                 |
+                 |
+            =========
+            
             """,
             """
-            ========================
-            |//                    |
-            ||                     /\\
-            ||                     \\/
-            ||                   (×_×)
-            ||                    /||\\
-            ||                   / || \\\\
-            ||                    //\\\\
-            ||                   //  \\\\
-            ||======================||
-          __||______________________||
-             💀 GAME OVER 💀
+             +---+
+             |   |
+             O   |
+            /|\\  |
+                 |
+                 |
+            =========
+            
             """,
             """
-            ========================
-            |//                    |
-            ||                     /\\
-            ||                     \\/
-            ||                   (×_×)
-            ||                    /||\\
-            ||                   / || \\\\
-            ||                    //\\\\
-            ||                   //  \\\\
-            ||======================||
-          __||______________________||
-             💀 GAME OVER 💀
+             +---+
+             |   |
+             O   |
+            /|\\  |
+            /    |
+                 |
+            =========
+            
+            """,
+            """
+             +---+
+             |   |
+             O   |
+            /|\\  |
+            / \\  |
+                 |
+            =========
+            
             """
     };
     public static Scanner scanner = new Scanner(System.in);
-    public static String[][] board = {{"__", "__", "_ "},
-            {"| ", "  ", " |"},
-            {"| ", "  ", "  "},
-            {"| ", "  ", "   "},
-            {"| ", " ", "    "},
-            {"A ", "  ", "  "},
-            {" "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
-    //Список слов
-    public static String[] collectionWords = {"Кукуруза", "Болото", "Автомобиль", "Чебурек", "Жираф", "Бамбук"};
-
-    public static String secretWord = getRandomWord();
-
-    public static String[][] resetBoard = {{"__", "__", "_ "},  // шаблон для расчистки поля для новой игры
-            {"| ", "  ", " |"},
-            {"| ", "  ", "  "},
-            {"| ", "  ", "   "},
-            {"| ", " ", "    "},
-            {"A ", "  ", "  "},
-            {" "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {"Неверно введенные буквы :", "", "", "", "", "", ""}};
 
     // так как все методы одинаковые то встраиваем их по логике
-    public static int scannerInt(){
-        while(true){
+    public static int scannerInt() {
+        while (true) {
             String s = scanner.nextLine().trim();
-            if(s.matches("\\d+")){
+            if (s.matches("\\d+")) {
                 return Integer.parseInt(s);
             }
             System.out.println("Ошибка! Введите число без букв и символов!");
         }
     }
 
-    public  static String scannerLine(){
+    public static String scannerLine() {
         while (true) {
             String s = scanner.nextLine().trim();
-            if(s.matches("[А-Яа-яЁё]")){
+            if (s.matches("[А-Яа-яЁё]")) {
                 return s.toLowerCase();
             }
             System.out.println("Ошибка! Введите букву кириллицы без цифр и символов!");
         }
     }
 
-    public static void statistic(){
+    public static void statistic() {
         if (wins == 0 && losses == 0) { //проверяем счетчики
             System.out.println("Ты еще не сыграл, статистики нет ;)");
         } else {
@@ -186,7 +148,7 @@ public class Stars {
         }
     }
 
-    public static List<String> load(){
+    public static List<String> load() {
         List<String> result = new ArrayList<>();
         try (InputStream is = Stars.class.getResourceAsStream("/words.txt");
              BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -206,180 +168,190 @@ public class Stars {
         return result;
     }
 
-    public static String rraannddoomm(){
+    public static String rraannddoomm() {
         Random random = new Random();
         List<String> raWord = load();
         int randomWord = random.nextInt(raWord.size());
         return raWord.get(randomWord);
     }
 
+    // метод вставляет звезды под количество букв
+    public static void vstavkazvezd() {
+        int a = SECRET.length();
+        for (int i = 0; i < a; i++) {
+            asd.add(i, "* ");
+        }
+    }
+
+    public static void proverkaASD(){
+        for(String x : asd){
+            System.out.print(x);
+        }
+        System.out.println();
+        for(String y : ddd){
+            System.out.print(y);
+        }
+        System.out.println();
+    }
+
+    // вставка буквы если правильная
+    public static void vstavkabukv(String a) {
+        String bookva = a.substring(0, 1);
+        OUT:
+        while (true){
+            for(String x : asd) {
+                if (bookva.trim().equalsIgnoreCase(x.trim())) {
+                    System.out.println("Такая буква уже есть");
+                    break OUT;
+                }
+            }
+            for (int i = 0;  i < SECRET.length(); i++) {
+                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
+                if (bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                    asd.set(i, bukvazagadanogoslova + " ");
+                    correctLettersCount++;
+                }
+            }
 
 
-//--------------------------------------------------------------------------
+
+
+        }
+    }
+
+    public static void esliNePravilno(String a) {
+        String bookva = a.substring(0, 1);
+        OUT:
+        while (true) {
+            for (String x : ddd) {
+                if (bookva.trim().equalsIgnoreCase(x.trim())) {
+                    System.out.println("Такая буква уже есть");
+                    break OUT;
+                }
+            }
+            for (int i = 0; i < SECRET.length(); i++) {
+                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
+                if (!bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                    ddd.set(i, bukvazagadanogoslova + " ");
+                    wrongLettersCount++;
+                    mistakesCount++;
+                    break OUT;
+                }
+            }
+            break;
+        }
+    }
+
+    public static void sshowBboard() {
+
+        String a = HANGMAN_STAGES[mistakesCount];
+        System.out.println(a);
+        proverkaASD();
+        //неверно введеные буквы и счетчик
+        // поле под буквы в виде звездочек
+        //сообщение что уже вводил эту букву
+    }
+
+    // сюда закинуть отгаданные буквы и потом через этот массив проверять и отсеивать повторный ввод
+    public static void ooooiit(String a) {
+        Set<String> otgadanieSlova = new HashSet<>();
+       otgadanieSlova.add(a);
+        for(String x : otgadanieSlova){
+        }
+    }
+
+    // тут закидывать неотгаданные буквы так убрается повторность введенной буквы
+    public static void Neotgadanie() {
+        Set<String> Neotgadanie = new HashSet<>();
+    }
+
+    // метод который подставлет звезды под размер слова и угаданных букв
+
+    // метод который проверяет
+
+    // наше поле букв
+    public static List<String> asd = new LinkedList<>();
+
+    public static List<String> ddd = new LinkedList<>();
+
+    public static String SECRET = rraannddoomm();
+
+    //--------------------------------------------------------------------------
     public static void showStartMenu() {
         //Меню в начале игры
-        while(true){
+        while (true) {
             showMenu();
             int ch = scannerInt();
             if (ch == 1) { // если выбрали 1 - начинаем новую игру
-                startNewGame();
+                restartNewGame();
                 start();
-            }
-            else if(ch == 2) {// если 2 - смотрим статистику//
+            } else if (ch == 2) {// если 2 - смотрим статистику//
                 statistic();
-               System.out.println("0 - Выход");
-               while(true) {
-                   int exit = scannerInt();
-                   if (exit == 0) {
-                       break;
-                   }
-                   System.out.println("Введите 0 для выхода");
-               }
-            }
-            else if(ch == 3) {
+                System.out.println("0 - Выход");
+                while (true) {
+                    int exit = scannerInt();
+                    if (exit == 0) {
+                        break;
+                    }
+                    System.out.println("Введите 0 для выхода");
+                }
+            } else if (ch == 3) {
                 System.out.println("Выход");
                 break;
-            }
-            else {
+            } else {
                 System.out.println("Ошибка ввода");
             }
         }
     }
 
-    public static void showMenu(){
+    public static void showMenu() {
         System.out.println("1 - Новая игра");
         System.out.println("2 - Статистика");
         System.out.println("3 - Выход");
     }
 
     public static void start() {
-
-        while(true) {
-            showBoard();
+        vstavkazvezd();
+        while (true) {
+            proverkaASD();
+            sshowBboard();
             String s = scannerLine();
-            chekUp(s);
-            if(checkWin()){
+            vstavkabukv(s);
+            esliNePravilno(s); // тут где то ошибка
+            //chekUp(s);
+            if (checkWin()) {
                 System.out.println("ТЫ ВЫИГРАЛ!!!");
                 wins++;
                 break;
             }
-            if(checkLoss()){
+            if (checkLoss()) {
                 losses++;
                 System.out.println("Вы проиграли!");
                 break;
             }
         }
     }
-
-    public static boolean checkWin() {// проверка выиграли мы или нет
-        int length = secretWord.length();
-        int openСells = 0;// 4
-        for(int i = 0; i < length; i++) {      //2
-            if(!"_ ".equals(board[7][i])) {
-                openСells++;
-
-            }
-            if(length == openСells){
-                showBoard();
+    public static boolean checkWin() {
+        if(correctLettersCount == SECRET.length()){
             return true;
-            }
         }
         return false;
     }
 
     public static boolean checkLoss() {  //проверка проиграли мы или нет
         if (mistakesCount == 6) {
-            showBoard();
             return true;
         }
         return false;
     }
 
-    public static String getRandomWord() {
-        Random random = new Random();
-        int randomWord = random.nextInt(collectionWords.length);
-        String chooseWord = collectionWords[randomWord];
-
-        // показать сколько букв в слове
-        int lengthWord = chooseWord.length();
-
-        // вставка количества букв в виде "_" в поле
-        for (int i = 0; i < lengthWord; i++) {
-            board[7][i] = "_ ";
-        }
-        return chooseWord;
-    } // // Вытаскиваем рандомное слово из списка и делаем под него количество ячеек в поле
-
-    public static void chekUp(String a) {
-        //  сравнить буквы
-        int i = 0;
-        int e = 0;
-        String x = a.substring(0, 1);
-        while (i < secretWord.length()) {
-            String y = secretWord.substring(i, i + 1);
-            if (x.equalsIgnoreCase(y)) {
-                board[7][i] = y + " ";
-                correctLettersCount++;
-                e++;
-            }
-            i++;
-        }
-        if (e == 0) {
-            board[8][wrongLettersCount] = x + " ";
-            mistakesCount++;
-            board[8][0] = "Неверно введенные буквы :(" + mistakesCount + ")";
-            incrementMistakes(mistakesCount);
-            wrongLettersCount++;
-        }
-    }  // проверка есть ли такая буква в слове и вывод неверных букв
-
-    public static void incrementMistakes(int a) {
-        switch (a) {
-            case 1:
-                board[2][2] = " 0";
-                break;
-            case 2:
-                board[3][2] = " |";
-                break;
-            case 3:
-                board[3][2] = "/|";
-                break;
-            case 4:
-                board[3][2] = "/|\\";
-                break;
-            case 5:
-                board[4][2] = " /";
-                break;
-            case 6:
-                board[4][2] = " /˙\\";
-                break;
-        }
-    } // считает ошибки
-
-    public static void showBoard() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print(board[i][j]);
-            }
-            System.out.println();
-        }
-    } // показывает поле
-
-    public static void startNewGame() {  //при новой игре нужно обнулить счетчики (кроме статистики) и измененное поле
+    public static void restartNewGame() {  //при новой игре нужно обнулить счетчики (кроме статистики) и измененное поле
         mistakesCount = 0;
         correctLettersCount = 0;
         wrongLettersCount = 1;
-        for (int i = 0; i < board.length; i++) {  //очищаем поле
-            for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = resetBoard[i][j];
-            }
-        }
-        secretWord = getRandomWord(); //генерируем новое слово
     }
 
     public static void main(String[] args) {
-        System.out.println(load());
         showStartMenu();
     }
-
 }
