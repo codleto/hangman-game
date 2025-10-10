@@ -196,39 +196,26 @@ public class Stars {
 
     // вставка буквы если правильная
     public static void vstavkabukv(String a) {
-        String bookva = a.substring(0, 1);
-        OUT:
-        while (true){
-            for(String x : asd) {
-                if (bookva.trim().equalsIgnoreCase(x.trim())) {
+        String bookva = a.substring(0, 1).toLowerCase();
+
+                if(ignorRegPravSlov.contains(bookva)){
                     System.out.println("Такая буква уже есть");
-                    break OUT;
+                } else {
+                    for (int i = 0; i < SECRET.length(); i++) {
+                        String bukvazagadanogoslova = SECRET.substring(i, i + 1);
+                        if (bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                            asd.set(i, bukvazagadanogoslova + " ");
+                            ignorRegPravSlov.add(bookva.toLowerCase());
+                        }
+                    }
                 }
-            }
-            for (int i = 0;  i < SECRET.length(); i++) {
-                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                if (bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
-                    asd.set(i, bukvazagadanogoslova + " ");
-                    correctLettersCount++;
-                }
-            }
 
-
-
-
-        }
     }
 
     public static void esliNePravilno(String a) {
         String bookva = a.substring(0, 1);
         OUT:
         while (true) {
-            for (String x : ddd) {
-                if (bookva.trim().equalsIgnoreCase(x.trim())) {
-                    System.out.println("Такая буква уже есть");
-                    break OUT;
-                }
-            }
             for (int i = 0; i < SECRET.length(); i++) {
                 String bukvazagadanogoslova = SECRET.substring(i, i + 1);
                 if (!bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
@@ -274,6 +261,8 @@ public class Stars {
 
     public static List<String> ddd = new LinkedList<>();
 
+    public static Set<String> ignorRegPravSlov = new HashSet<>();
+
     public static String SECRET = rraannddoomm();
 
     //--------------------------------------------------------------------------
@@ -317,7 +306,7 @@ public class Stars {
             sshowBboard();
             String s = scannerLine();
             vstavkabukv(s);
-            esliNePravilno(s); // тут где то ошибка
+            //esliNePravilno(s); // тут где то ошибка
             //chekUp(s);
             if (checkWin()) {
                 System.out.println("ТЫ ВЫИГРАЛ!!!");
