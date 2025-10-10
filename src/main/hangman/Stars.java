@@ -187,6 +187,7 @@ public class Stars {
             System.out.print(x + " ");
         }
         System.out.println();
+        System.out.print("Ошибки:" + "(" + ddd.size() + ") ");
         for(String y : ddd){
             System.out.print(y + " ");
         }
@@ -216,11 +217,8 @@ public class Stars {
         if(ddd.contains(bookva)) {
             System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил");
         } else {
-            for (int i = 0; i < SECRET.length(); i++) {
-                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                if (!bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+            if(!SECRET.contains(bookva)){
                     ddd.add(bookva);
-                }
             }
         }
     }
@@ -229,22 +227,10 @@ public class Stars {
         return ddd.size();
     }
 
-    public static void sshowBboard() {   //----------------------------
-
+    public static void sshowBboard() {
         String a = HANGMAN_STAGES[oshibki()];
         System.out.println(a);
         proverkaASD();
-        //неверно введеные буквы и счетчик
-        // поле под буквы в виде звездочек
-        //сообщение что уже вводил эту букву
-    }
-
-    // сюда закинуть отгаданные буквы и потом через этот массив проверять и отсеивать повторный ввод
-    public static void ooooiit(String a) {
-        Set<String> otgadanieSlova = new HashSet<>();
-       otgadanieSlova.add(a);
-        for(String x : otgadanieSlova){
-        }
     }
 
     // наше поле букв
@@ -295,9 +281,10 @@ public class Stars {
             sshowBboard();
             String s = scannerLine();
             vstavkabukv(s);
-            //esliNePravilno(s); // тут где то ошибка
+            esliNePravilno(s); // тут где то ошибка
             //chekUp(s);
             if (checkWin()) {
+                sshowBboard();
                 System.out.println("ТЫ ВЫИГРАЛ!!!");
                 wins++;
                 break;
