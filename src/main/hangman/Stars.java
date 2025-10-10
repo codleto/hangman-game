@@ -105,13 +105,13 @@ public class Stars {
                     if (exit == 0) {
                         break;
                     }
-                    System.out.println("Введите 0 для выхода");
+                    System.out.println("Введи 0 для выхода, если хочешь конечно");
                 }
             } else if (ch == 3) {
                 System.out.println("Выход");
                 break;
             } else {
-                System.out.println("Ошибка! Введите 1, 2 или 3");
+                System.out.println("Введи 1, 2 или 3, а то никуда не попадешь (да это угроза)");
             }
         }
     }
@@ -131,13 +131,13 @@ public class Stars {
             registerWrongLetter(s);
             if (checkWin()) {
                 showBoard();
-                System.out.println("ТЫ ВЫИГРАЛ!!!");
+                System.out.println("ТЫ ВЫИГРАЛ!!! ТЫ ПРОСТО ЧЕРТОВ ГЕНИЙ!!!");
                 wins++;
                 break;
             }
             if (checkLoss()) {
                 losses++;
-                System.out.println("Вы проиграли!");
+                System.out.println("Мда, а словарь то детский я загрузил (без негатива)");
                 break;
             }
         }
@@ -163,8 +163,8 @@ public class Stars {
             System.out.println("Ты еще не сыграл, статистики нет ;)");
         } else {
             System.out.println("Твоя статистика!");
-            System.out.println("Выигрыши: " + wins);
-            System.out.println("Проигрыши: " + losses);
+            System.out.println("Выигрыши по твоей вине: " + wins);
+            System.out.println("Проигрыши не по твоей вине: " + losses);
         }
     }
 
@@ -202,7 +202,7 @@ public class Stars {
             if (s.matches("[А-Яа-яЁё]")) {
                 return s.toLowerCase();
             }
-            System.out.println("Ошибка! Введите ОДНУ букву кириллицы без цифр и символов!");
+            System.out.println("Введи пожаааалуйста одну букву кириллицы без цифр и символов)");
         }
     }
 
@@ -244,7 +244,7 @@ public class Stars {
         String letter = a.substring(0, 1).toLowerCase().trim();
 
         if (correctLetters.contains(letter)) {
-            System.out.println("Такая буква уже есть");
+            System.out.println("Такая буква уже есть, попробуй другую");
         } else {
             for (int i = 0; i < secretWord.length(); i++) {
                 String secretLetter = secretWord.substring(i, i + 1);
@@ -259,7 +259,7 @@ public class Stars {
     public static void registerWrongLetter(String a) {
         String letter = a.substring(0, 1).toLowerCase().trim();
         if(wrongLetters.contains(letter)) {
-            System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил");
+            System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил, было бы кул если введешь правильную ;)");
         } else {
             if(!secretWord.toLowerCase().contains(letter)){
                     wrongLetters.add(letter);
