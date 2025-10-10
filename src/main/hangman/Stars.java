@@ -178,17 +178,17 @@ public class Stars {
     public static void vstavkazvezd() {
         int a = SECRET.length();
         for (int i = 0; i < a; i++) {
-            asd.add(i, "* ");
+            asd.add(i, "*");
         }
     }
 
     public static void proverkaASD(){
         for(String x : asd){
-            System.out.print(x);
+            System.out.print(x + " ");
         }
         System.out.println();
         for(String y : ddd){
-            System.out.print(y);
+            System.out.print(y + " ");
         }
         System.out.println();
     }
@@ -203,7 +203,7 @@ public class Stars {
                     for (int i = 0; i < SECRET.length(); i++) {
                         String bukvazagadanogoslova = SECRET.substring(i, i + 1);
                         if (bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
-                            asd.set(i, bukvazagadanogoslova + " ");
+                            asd.set(i, bukvazagadanogoslova);
                             ignorRegPravSlov.add(bookva);
                         }
                     }
@@ -225,9 +225,13 @@ public class Stars {
         }
     }
 
+    public static int oshibki(){
+        return ddd.size();
+    }
+
     public static void sshowBboard() {
 
-        String a = HANGMAN_STAGES[2];
+        String a = HANGMAN_STAGES[oshibki()];
         System.out.println(a);
         proverkaASD();
         //неверно введеные буквы и счетчик
@@ -315,17 +319,11 @@ public class Stars {
         }
     }
     public static boolean checkWin() {
-        if(correctLettersCount == SECRET.length()){
-            return true;
-        }
-        return false;
+        return correctLettersCount == SECRET.length();
     }
 
     public static boolean checkLoss() {  //проверка проиграли мы или нет
-        if (6 == 6) {
-            return true;
-        }
-        return false;
+        return oshibki() == 6;
     }
 
     public static void restartNewGame() {  //при новой игре нужно обнулить счетчики (кроме статистики) и измененное поле
