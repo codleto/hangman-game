@@ -35,19 +35,19 @@ import java.util.*;
 
 public class Stars {
     //СЧЕТЧИКИ
-    public static List<String> asd = new LinkedList<>();
+    public static List<String> wordMask = new LinkedList<>();
 
-    public static Set<String> ignorRegPravSlov = new HashSet<>();
+    public static Set<String> correctLetters = new HashSet<>();
 
-    public static String SECRET = rraannddoomm();
+    public static String secretWord = chooseRandomWord();
 
-    public static Set<String> ddd = new HashSet<>();
+    public static Set<String> wrongLetters = new HashSet<>();
 
     public static int wins = 0; // счетчик выигрышей
     public static int losses = 0; // счетчик проигрышей
 
     // Поле
-    public static String[] HANGMAN_STAGES = {
+    public static String[] hangmanStages = {
             """
            +---+
            |   |
@@ -152,7 +152,7 @@ public class Stars {
         }
     }
 
-    public static List<String> load() {
+    public static List<String> readWordsFromFile() {
         List<String> result = new ArrayList<>();
         try (InputStream is = Stars.class.getResourceAsStream("/words.txt");
              BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
@@ -172,77 +172,77 @@ public class Stars {
         return result;
     }
 
-    public static String rraannddoomm() {
+    public static String chooseRandomWord() {
         Random random = new Random();
-        List<String> raWord = load();
-        int randomWord = random.nextInt(raWord.size());
-        return raWord.get(randomWord);
+        List<String> chooseWord = readWordsFromFile();
+        int randomWord = random.nextInt(chooseWord.size());
+        return chooseWord.get(randomWord);
     }
 
-    public static void vstavkazvezd() {
-        int a = SECRET.length();
+    public static void initMask() {
+        int a = secretWord.length();
         for (int i = 0; i < a; i++) {
-            asd.add(i, "*");
+            wordMask.add(i, "*");
         }
     }
 
-    public static void proverkaASD(){
-        for(String x : asd){
+    public static void printScoreboard(){
+        for(String x : wordMask){
             System.out.print(x + " ");
         }
         System.out.println();
-        System.out.print("Ошибки:" + "(" + ddd.size() + ") ");
-        for(String y : ddd){
+        System.out.print("Ошибки:" + "(" + wrongLetters.size() + ") ");
+        for(String y : wrongLetters){
             System.out.print(y + " ");
         }
         System.out.println();
     }// это по факту панель показа слова и ошибок
 
-    public static void vstavkabukv(String a) {
-        String bookva = a.substring(0, 1).toLowerCase().trim();
+    public static void openLetters(String a) {
+        String letter = a.substring(0, 1).toLowerCase().trim();
 
-        if (ignorRegPravSlov.contains(bookva)) {
+        if (correctLetters.contains(letter)) {
             System.out.println("Такая буква уже есть");
         } else {
-            for (int i = 0; i < SECRET.length(); i++) {
-                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                if (bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
-                    asd.set(i, bukvazagadanogoslova);
-                    ignorRegPravSlov.add(bookva);
+            for (int i = 0; i < secretWord.length(); i++) {
+                String secretLetter = secretWord.substring(i, i + 1);
+                if (letter.equalsIgnoreCase(secretLetter.trim())) {
+                    wordMask.set(i, secretLetter);
+                    correctLetters.add(letter);
                 }
             }
         }
     }
 
-    public static void esliNePravilno(String a) {
-        String bookva = a.substring(0, 1).toLowerCase().trim();
-        if(ddd.contains(bookva)) {
+    public static void registerWrongLetter(String a) {
+        String letter = a.substring(0, 1).toLowerCase().trim();
+        if(wrongLetters.contains(letter)) {
             System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил");
         } else {
-            if(!SECRET.toLowerCase().contains(bookva)){
-                    ddd.add(bookva);
+            if(!secretWord.toLowerCase().contains(letter)){
+                    wrongLetters.add(letter);
             }
         }
     }
 
-    public static int oshibki(){
-        return ddd.size();
+    public static int wrongCount(){
+        return wrongLetters.size();
     }
 
-    public static void sshowBboard() {
-        String a = HANGMAN_STAGES[oshibki()];
+    public static void showBoard() {
+        String a = hangmanStages[wrongCount()];
         System.out.println(a);
-        proverkaASD();
+        printScoreboard();
     }
 
-    public static void showStartMenu() {
+    public static void launchGame() {
         //Меню в начале игры
         while (true) {
             showMenu();
             int ch = readMenuOption();
             if (ch == 1) { // если выбрали 1 - начинаем новую игру
-                restartNewGame();
-                start();
+                resetGame();
+                startGame();
             } else if (ch == 2) {// если 2 - смотрим статистику//
                 statistic();
                 System.out.println("0 - Выход");
@@ -268,15 +268,15 @@ public class Stars {
         System.out.println("3 - Выход");
     }
 
-    public static void start() {//--------- ---------------исправили двойное инфо табло
-        vstavkazvezd();
+    public static void startGame() {//--------- ---------------исправили двойное инфо табло
+        initMask();
         while (true) {
-            sshowBboard();
+            showBoard();
             String s = readCyrillicWord();
-            vstavkabukv(s);
-            esliNePravilno(s);
+            openLetters(s);
+            registerWrongLetter(s);
             if (checkWin()) {
-                sshowBboard();
+                showBoard();
                 System.out.println("ТЫ ВЫИГРАЛ!!!");
                 wins++;
                 break;
@@ -290,21 +290,21 @@ public class Stars {
     }
 
     public static boolean checkWin() {
-        return !asd.contains("*");
+        return !wordMask.contains("*");
     }
 
     public static boolean checkLoss() {  //проверка проиграли мы или нет
-        return oshibki() == 6;
+        return wrongCount() == 6;
     }
 
-    public static void restartNewGame() {
-        asd.clear();
-        ddd.clear();
-        ignorRegPravSlov.clear();
-        SECRET = rraannddoomm();
+    public static void resetGame() {
+        wordMask.clear();
+        wrongLetters.clear();
+        correctLetters.clear();
+        secretWord = chooseRandomWord();
     }
 
     public static void main(String[] args) {
-        showStartMenu();
+        launchGame();
     }
 }
