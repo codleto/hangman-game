@@ -122,7 +122,7 @@ public class Stars {
     public static Scanner scanner = new Scanner(System.in);
     // так как все методы одинаковые то встраиваем их по логике
 
-    public static int scannerInt() {
+    public static int readMenuOption() {
         while (true) {
             String s = scanner.nextLine().trim();
             if (s.matches("\\d+")) {
@@ -239,7 +239,7 @@ public class Stars {
         //Меню в начале игры
         while (true) {
             showMenu();
-            int ch = scannerInt();
+            int ch = readMenuOption();
             if (ch == 1) { // если выбрали 1 - начинаем новую игру
                 restartNewGame();
                 start();
@@ -247,7 +247,7 @@ public class Stars {
                 statistic();
                 System.out.println("0 - Выход");
                 while (true) {
-                    int exit = scannerInt();
+                    int exit = readMenuOption();
                     if (exit == 0) {
                         break;
                     }
