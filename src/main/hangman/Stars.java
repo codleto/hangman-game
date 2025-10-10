@@ -132,7 +132,7 @@ public class Stars {
         }
     }
 
-    public static String scannerLine() {
+    public static String readCyrillicWord() {
         while (true) {
             String s = scanner.nextLine().trim();
             if (s.matches("[А-Яа-яЁё]")) {
@@ -143,7 +143,7 @@ public class Stars {
     }
 
     public static void statistic() {
-        if (wins == 0 && losses == 0) { //проверяем счетчики
+        if (wins == 0 && losses == 0) {
             System.out.println("Ты еще не сыграл, статистики нет ;)");
         } else {
             System.out.println("Твоя статистика!");
@@ -272,7 +272,7 @@ public class Stars {
         vstavkazvezd();
         while (true) {
             sshowBboard();
-            String s = scannerLine();
+            String s = readCyrillicWord();
             vstavkabukv(s);
             esliNePravilno(s);
             if (checkWin()) {
