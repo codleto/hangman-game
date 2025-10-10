@@ -35,11 +35,16 @@ import java.util.*;
 
 public class Stars {
     //СЧЕТЧИКИ
+    public static List<String> asd = new LinkedList<>();
+
+    public static Set<String> ignorRegPravSlov = new HashSet<>();
+
+    public static String SECRET = rraannddoomm();
+
     public static Set<String> ddd = new HashSet<>();
 
     public static int wins = 0; // счетчик выигрышей
     public static int losses = 0; // счетчик проигрышей
-    public static int correctLettersCount = 0;// счетчик отгаданных букв
 
     // Поле
     public static String[] HANGMAN_STAGES = {
@@ -52,7 +57,7 @@ public class Stars {
                |
           =========
           
-            """,
+          """,
             """
             +---+
             |   |
@@ -62,7 +67,7 @@ public class Stars {
                 |
            =========
            
-            """,
+           """,
             """
              +---+
              |   |
@@ -115,8 +120,8 @@ public class Stars {
             """
     };
     public static Scanner scanner = new Scanner(System.in);
-
     // так как все методы одинаковые то встраиваем их по логике
+
     public static int scannerInt() {
         while (true) {
             String s = scanner.nextLine().trim();
@@ -174,7 +179,6 @@ public class Stars {
         return raWord.get(randomWord);
     }
 
-    // метод вставляет звезды под количество букв
     public static void vstavkazvezd() {
         int a = SECRET.length();
         for (int i = 0; i < a; i++) {
@@ -192,24 +196,22 @@ public class Stars {
             System.out.print(y + " ");
         }
         System.out.println();
-    }
+    }// это по факту панель показа слова и ошибок
 
-    // вставка буквы если правильная
     public static void vstavkabukv(String a) {
         String bookva = a.substring(0, 1).toLowerCase().trim();
 
-                if(ignorRegPravSlov.contains(bookva)){
-                    System.out.println("Такая буква уже есть");
-                } else {
-                    for (int i = 0; i < SECRET.length(); i++) {
-                        String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                        if (bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
-                            asd.set(i, bukvazagadanogoslova);
-                            ignorRegPravSlov.add(bookva);
-                        }
-                    }
+        if (ignorRegPravSlov.contains(bookva)) {
+            System.out.println("Такая буква уже есть");
+        } else {
+            for (int i = 0; i < SECRET.length(); i++) {
+                String bukvazagadanogoslova = SECRET.substring(i, i + 1);
+                if (bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                    asd.set(i, bukvazagadanogoslova);
+                    ignorRegPravSlov.add(bookva);
                 }
-
+            }
+        }
     }
 
     public static void esliNePravilno(String a) {
@@ -217,7 +219,7 @@ public class Stars {
         if(ddd.contains(bookva)) {
             System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил");
         } else {
-            if(!SECRET.contains(bookva)){
+            if(!SECRET.toLowerCase().contains(bookva)){
                     ddd.add(bookva);
             }
         }
@@ -233,14 +235,6 @@ public class Stars {
         proverkaASD();
     }
 
-    // наше поле букв
-    public static List<String> asd = new LinkedList<>();
-
-    public static Set<String> ignorRegPravSlov = new HashSet<>();
-
-    public static String SECRET = rraannddoomm();
-
-    //--------------------------------------------------------------------------
     public static void showStartMenu() {
         //Меню в начале игры
         while (true) {
@@ -263,7 +257,7 @@ public class Stars {
                 System.out.println("Выход");
                 break;
             } else {
-                System.out.println("Ошибка ввода");
+                System.out.println("Ошибка! Введите 1, 2 или 3");
             }
         }
     }
@@ -274,15 +268,13 @@ public class Stars {
         System.out.println("3 - Выход");
     }
 
-    public static void start() { // =------------------
+    public static void start() {//--------- ---------------исправили двойное инфо табло
         vstavkazvezd();
         while (true) {
-            proverkaASD();
             sshowBboard();
             String s = scannerLine();
             vstavkabukv(s);
-            esliNePravilno(s); // тут где то ошибка
-            //chekUp(s);
+            esliNePravilno(s);
             if (checkWin()) {
                 sshowBboard();
                 System.out.println("ТЫ ВЫИГРАЛ!!!");
@@ -296,6 +288,7 @@ public class Stars {
             }
         }
     }
+
     public static boolean checkWin() {
         return !asd.contains("*");
     }
@@ -304,10 +297,11 @@ public class Stars {
         return oshibki() == 6;
     }
 
-    public static void restartNewGame() {  //при новой игре нужно обнулить счетчики (кроме статистики) и измененное поле
-
-        correctLettersCount = 0;
-
+    public static void restartNewGame() {
+        asd.clear();
+        ddd.clear();
+        ignorRegPravSlov.clear();
+        SECRET = rraannddoomm();
     }
 
     public static void main(String[] args) {
