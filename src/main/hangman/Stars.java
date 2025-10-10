@@ -35,12 +35,11 @@ import java.util.*;
 
 public class Stars {
     //СЧЕТЧИКИ
+    public static Set<String> ddd = new HashSet<>();
+
     public static int wins = 0; // счетчик выигрышей
     public static int losses = 0; // счетчик проигрышей
-    public static int mistakesCount = 0; // счетчик ошибок
-    public static int wrongLettersCount = 0; //счетчик неверных букв
     public static int correctLettersCount = 0;// счетчик отгаданных букв
-    public static boolean stop = true;// если false то завершаем программу
 
     // Поле
     public static String[] HANGMAN_STAGES = {
@@ -134,7 +133,7 @@ public class Stars {
             if (s.matches("[А-Яа-яЁё]")) {
                 return s.toLowerCase();
             }
-            System.out.println("Ошибка! Введите букву кириллицы без цифр и символов!");
+            System.out.println("Ошибка! Введите ОДНУ букву кириллицы без цифр и символов!");
         }
     }
 
@@ -196,16 +195,16 @@ public class Stars {
 
     // вставка буквы если правильная
     public static void vstavkabukv(String a) {
-        String bookva = a.substring(0, 1).toLowerCase();
+        String bookva = a.substring(0, 1).toLowerCase().trim();
 
                 if(ignorRegPravSlov.contains(bookva)){
                     System.out.println("Такая буква уже есть");
                 } else {
                     for (int i = 0; i < SECRET.length(); i++) {
                         String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                        if (bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                        if (bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
                             asd.set(i, bukvazagadanogoslova + " ");
-                            ignorRegPravSlov.add(bookva.toLowerCase());
+                            ignorRegPravSlov.add(bookva);
                         }
                     }
                 }
@@ -213,25 +212,22 @@ public class Stars {
     }
 
     public static void esliNePravilno(String a) {
-        String bookva = a.substring(0, 1);
-        OUT:
-        while (true) {
+        String bookva = a.substring(0, 1).toLowerCase().trim();
+        if(ddd.contains(bookva)) {
+            System.out.println("Такую НЕПРАВИЛЬНУЮ букву ты уже вводил");
+        } else {
             for (int i = 0; i < SECRET.length(); i++) {
                 String bukvazagadanogoslova = SECRET.substring(i, i + 1);
-                if (!bookva.trim().equalsIgnoreCase(bukvazagadanogoslova.trim())) {
-                    ddd.set(i, bukvazagadanogoslova + " ");
-                    wrongLettersCount++;
-                    mistakesCount++;
-                    break OUT;
+                if (!bookva.equalsIgnoreCase(bukvazagadanogoslova.trim())) {
+                    ddd.add(bookva);
                 }
             }
-            break;
         }
     }
 
     public static void sshowBboard() {
 
-        String a = HANGMAN_STAGES[mistakesCount];
+        String a = HANGMAN_STAGES[2];
         System.out.println(a);
         proverkaASD();
         //неверно введеные буквы и счетчик
@@ -258,8 +254,6 @@ public class Stars {
 
     // наше поле букв
     public static List<String> asd = new LinkedList<>();
-
-    public static List<String> ddd = new LinkedList<>();
 
     public static Set<String> ignorRegPravSlov = new HashSet<>();
 
@@ -328,16 +322,16 @@ public class Stars {
     }
 
     public static boolean checkLoss() {  //проверка проиграли мы или нет
-        if (mistakesCount == 6) {
+        if (6 == 6) {
             return true;
         }
         return false;
     }
 
     public static void restartNewGame() {  //при новой игре нужно обнулить счетчики (кроме статистики) и измененное поле
-        mistakesCount = 0;
+
         correctLettersCount = 0;
-        wrongLettersCount = 1;
+
     }
 
     public static void main(String[] args) {
