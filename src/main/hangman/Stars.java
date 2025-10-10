@@ -229,7 +229,7 @@ public class Stars {
         return ddd.size();
     }
 
-    public static void sshowBboard() {
+    public static void sshowBboard() {   //----------------------------
 
         String a = HANGMAN_STAGES[oshibki()];
         System.out.println(a);
@@ -246,15 +246,6 @@ public class Stars {
         for(String x : otgadanieSlova){
         }
     }
-
-    // тут закидывать неотгаданные буквы так убрается повторность введенной буквы
-    public static void Neotgadanie() {
-        Set<String> Neotgadanie = new HashSet<>();
-    }
-
-    // метод который подставлет звезды под размер слова и угаданных букв
-
-    // метод который проверяет
 
     // наше поле букв
     public static List<String> asd = new LinkedList<>();
@@ -297,7 +288,7 @@ public class Stars {
         System.out.println("3 - Выход");
     }
 
-    public static void start() {
+    public static void start() { // =------------------
         vstavkazvezd();
         while (true) {
             proverkaASD();
@@ -319,7 +310,7 @@ public class Stars {
         }
     }
     public static boolean checkWin() {
-        return correctLettersCount == SECRET.length();
+        return !asd.contains("*");
     }
 
     public static boolean checkLoss() {  //проверка проиграли мы или нет
