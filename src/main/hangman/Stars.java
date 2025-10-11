@@ -11,6 +11,7 @@ public class Stars {
     public static final int NEW_GAME = 1;
     public static final int STATISTIC = 2;
     public static final int EXIT_GAME = 3;
+    public static final int EXIT = 0;
 
 
     public static final Scanner scanner = new Scanner(System.in);
@@ -97,10 +98,10 @@ public class Stars {
         while (true) {
             showMenu();
             int ch = readMenuOption();
-            if (ch == 1) {
+            if (ch == NEW_GAME) {
                 resetGame();
                 startGame();
-            } else if (ch == 2) {
+            } else if (ch == STATISTIC) {
                 statistic();
                 System.out.println("0 - Выход");
                 while (true) {
@@ -110,7 +111,7 @@ public class Stars {
                     }
                     System.out.println("Введи 0 для выхода, если хочешь конечно");
                 }
-            } else if (ch == 3) {
+            } else if (ch == EXIT_GAME) {
                 System.out.println("Выход");
                 break;
             } else {
