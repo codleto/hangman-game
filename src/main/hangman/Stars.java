@@ -212,13 +212,16 @@ public class Stars {
 
     public static List<String> readWordsFromFile() {
         List<String> result = new ArrayList<>();
-        try (InputStream is = Stars.class.getResourceAsStream("/words.txt");
-             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String w = line.trim();
-                if (!w.isEmpty()) result.add(w);
+        try (InputStream is = Stars.class.getResourceAsStream("/words.txt")) {
+            if (is == null) {
+                throw new IllegalStateException("Не найден ресурс: /words.txt (положи файл в src/main/resources)");
+            }
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String w = line.trim();
+                    if (!w.isEmpty()) result.add(w);
+                }
             }
         } catch (Exception e) {
             System.out.println("Не удалось загрузить words.txt из ресурсов: " + e.getMessage());
