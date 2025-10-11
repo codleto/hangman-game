@@ -106,7 +106,7 @@ public class Stars {
                 System.out.println("0 - Выход");
                 while (true) {
                     int exit = readMenuOption();
-                    if (exit == 0) {
+                    if (exit == EXIT) {
                         break;
                     }
                     System.out.println("Введи 0 для выхода, если хочешь конечно");
