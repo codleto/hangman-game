@@ -8,6 +8,10 @@ import java.util.*;
 
 
 public class Stars {
+    public static final int NEW_GAME = 1;
+    public static final int STATISTIC = 2;
+    public static final int EXIT_GAME = 3;
+
 
     public static final Scanner scanner = new Scanner(System.in);
 
@@ -90,7 +94,6 @@ public class Stars {
     }
 
     public static void launchGame() {
-
         while (true) {
             showMenu();
             int ch = readMenuOption();
