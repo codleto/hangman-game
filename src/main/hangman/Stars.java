@@ -90,12 +90,35 @@ public class Stars {
             =========
             """
     };
+
+    public static void dez () {
+        String a = """
+                            ███     ██  ████████    ██     ██\s
+                            ████    ██  ██          ██     ██\s
+                            ██ ██   ██  ██          ██  █  ██\s
+                            ██  ██  ██  ███████     ██ ███ ██\s
+                            ██   ██ ██  ██          ███   ███\s
+                            ██    ████  ██          ██     ██\s
+                            ██     ███  ████████    ██     ██\s
+                
+                             ███████    ███      ██     ██   ████████ \s
+                            ██     ██   ██ ██    ███   ███   ██       \s
+                            ██          ██   ██  ██ █ █ ██   ██       \s
+                            ██  ████   ██     ██ ██  █  ██   ███████  \s
+                            ██     ██  █████████ ██     ██   ██       \s
+                            ██     ██  ██     ██ ██     ██   ██       \s
+                             ███████   ██     ██ ██     ██   ████████ \s
+                """;
+        System.out.println(a);
+    }
+
     public static void main(String[] args) {
         launchGame();
     }
 
     public static void launchGame() {
         while (true) {
+            dez();
             showMenu();
             int ch = readMenuOption();
             if (ch == NEW_GAME) {
