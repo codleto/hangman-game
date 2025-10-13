@@ -18,7 +18,7 @@ public class Stars {
 
     public static List<String> wordMask = new LinkedList<>();
     public static Set<String> correctLetters = new HashSet<>();
-    public static Set<String> wrongLetters = new HashSet<>();
+    public static Set<String> wrongLetters = new LinkedHashSet<>();
 
     public static  String secretWord = chooseRandomWord();
 
